@@ -1,4 +1,4 @@
-import {renderPictureDetails} from './big-picture.js';
+import {renderBigPicture} from './big-picture.js';
 
 const picturesContainer = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
@@ -14,7 +14,7 @@ const renderPictures = function(list) {
     postCommentsClone.textContent = post.comments.length;
     postLikesClone.textContent = post.likes;
     postTemplateClone.addEventListener('click', () => {
-      renderPictureDetails(post);
+      renderBigPicture(post);
     });
     picturesFragment.appendChild(postTemplateClone);
   });
