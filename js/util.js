@@ -16,4 +16,8 @@ function checkLengthString(string, length) {
   return string.length <= length;
 }
 
-export {getRandomNumber, getInfo, checkLengthString};
+function isEscapeKey(evt) {
+  return evt.key === 'Escape';
+}
+
+export {getRandomNumber, getInfo, checkLengthString, isEscapeKey};

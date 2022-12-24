@@ -1,26 +1,12 @@
+import { isEscapeKey } from './util.js';
+
 const bigPicture = document.querySelector('.big-picture');
 const body = document.querySelector('body');
 const bigPictureSocialCountComments = bigPicture.querySelector('.social__comment-count');
 const bigPictureCommentsLoader = bigPicture.querySelector('.comments-loader');
+const closeButton = document.querySelector('.big-picture__cancel');
 bigPictureSocialCountComments.classList.add('hidden');
 bigPictureCommentsLoader.classList.add('hidden');
-
-const cancelBigPictureButton = () => {
-  const cancelButton = bigPicture.querySelector('.big-picture__cancel');
-  cancelButton.addEventListener('click', () => {
-    bigPicture.classList.add('hidden');
-    body.classList.remove('modal-open');
-  });
-};
-
-const cancelBigPictureEsc = () => {
-  document.addEventListener('keydown', (evt) => {
-    if (evt.keyCode === 27) {
-      bigPicture.classList.add('hidden');
-      body.classList.remove('modal-open');
-    }
-  });
-};
 
 const addComment = (item) => {
   const bigPictureComments = bigPicture.querySelector('.social__comments');
@@ -40,9 +26,31 @@ const addComment = (item) => {
   }
 };
 
-const renderBigPicture = (data) => {
+const onEscKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeBigPicture();
+  }
+};
+
+function openBigPicture() {
   bigPicture.classList.remove('hidden');
   body.classList.add('modal-open');
+  document.addEventListener('keydown', onEscKeydown);
+}
+
+function closeBigPicture() {
+  bigPicture.classList.add('hidden');
+  body.classList.remove('modal-open');
+  document.removeEventListener('keydown', onEscKeydown);
+}
+
+closeButton.addEventListener('click', () => {
+  closeBigPicture();
+});
+
+const renderBigPicture = (data) => {
+  openBigPicture();
   const bigPictureImg = bigPicture.querySelector('.big-picture__img').querySelector('img');
   const bigPictureLikes = bigPicture.querySelector('.likes-count');
   const bigPictureCountComments = bigPicture.querySelector('.comments-count');
@@ -52,8 +60,6 @@ const renderBigPicture = (data) => {
   bigPictureCountComments.textContent = data.comments.length;
   bigPictureDescrip.textContent = data.description;
   addComment(data);
-  cancelBigPictureButton();
-  cancelBigPictureEsc();
 };
 
 export {renderBigPicture};
