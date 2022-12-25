@@ -30,6 +30,7 @@
       <section class="img-upload">
         <div class="img-upload__wrapper">
           <h2 class="img-upload__title  visually-hidden">Загрузка фотографии</h2>
+
           <form class="img-upload__form" id="upload-select-image" method="post" action="https://25.javascript.pages.academy/kekstagram/data" enctype="multipart/form-data" autocomplete="off">
 
             <!-- Изначальное состояние поля для загрузки изображения -->
@@ -115,8 +116,17 @@
 
                 <!-- Добавление хэш-тегов и комментария к изображению -->
                 <fieldset class="img-upload__text text">
-                  <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег">
-                  <textarea class="text__description" name="description" placeholder="Ваш комментарий..."></textarea>
+                  <div class="img-upload__element">
+                    <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег">
+                  </div>
+                  <div class="img-upload__element">
+                    <textarea class="text__description" name="description" placeholder="Ваш комментарий..." data-pristine-maxlength-message="Комментарий не может быть длиннее 140 символов" data-pristine-maxlength="140"></textarea>
+                    <div class="counter-block">
+                      <span class="counter-block__numbers">
+                        <span class="counter-block__dinamic-number">0</span> / 140
+                      </span>
+                    </div>
+                  </div>
                 </fieldset>
 
                 <!-- Кнопка для отправки данных на сервер -->
@@ -229,6 +239,7 @@
   <template id="messages">
     <div class="img-upload__message  img-upload__message--loading">Загружаем...</div>
   </template>
+  <script src="pristine/pristine.min.js"></script>
   <script src="js/main.js" type="module"></script>
 </body>
 </html>
