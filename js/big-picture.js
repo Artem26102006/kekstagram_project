@@ -2,28 +2,24 @@ import { isEscapeKey } from './util.js';
 
 const bigPicture = document.querySelector('.big-picture');
 const body = document.querySelector('body');
-const bigPictureSocialCountComments = bigPicture.querySelector('.social__comment-count');
-const bigPictureCommentsLoader = bigPicture.querySelector('.comments-loader');
+// const bigPictureSocialCountComments = bigPicture.querySelector('.social__comment-count');
+const buttonCommentsLoader = bigPicture.querySelector('.comments-loader');
 const closeButton = document.querySelector('.big-picture__cancel');
-bigPictureSocialCountComments.classList.add('hidden');
-bigPictureCommentsLoader.classList.add('hidden');
+const bigPictureComments = bigPicture.querySelector('.social__comments');
 
-const addComment = (item) => {
-  const bigPictureComments = bigPicture.querySelector('.social__comments');
-  const comments = item.comments;
+const addComment = (comments) => {
+  const fragment = document.createDocumentFragment();
+  comments.forEach((comment) => {
+    const commentElement = document.createElement('li');
+    commentElement.classList.add('social__comment');
+    commentElement.innerHTML = '<img class="social__picture" src="" alt="" width="35" height="35"><p class="social__text"></p>';
+    commentElement.querySelector('.social__picture').src = comment.avatar;
+    commentElement.querySelector('.social__picture').alt = comment.name;
+    commentElement.querySelector('.social__text').textContent = comment.message;
+    fragment.appendChild(commentElement);
+  });
   bigPictureComments.innerHTML = '';
-  for (let i = 0; i < comments.length; i++) {
-    bigPictureComments.insertAdjacentHTML('beforeend',
-      `<li class="social__comment">
-        <img
-          class="social__picture"
-          src="${comments[i].avatar}"
-          alt="${comments[i].name}"
-          width="35" height="35">
-        <p class="social__text">${comments[i].message}</p>
-      </li>`
-    );
-  }
+  bigPictureComments.appendChild(fragment);
 };
 
 const onEscKeydown = (evt) => {
@@ -49,17 +45,21 @@ closeButton.addEventListener('click', () => {
   closeBigPicture();
 });
 
-const renderBigPicture = (data) => {
-  openBigPicture();
+const bigPictureDetailes = ({url, likes, comments, description}) => {
   const bigPictureImg = bigPicture.querySelector('.big-picture__img').querySelector('img');
   const bigPictureLikes = bigPicture.querySelector('.likes-count');
   const bigPictureCountComments = bigPicture.querySelector('.comments-count');
   const bigPictureDescrip = bigPicture.querySelector('.social__caption');
-  bigPictureImg.src = data.url;
-  bigPictureLikes.textContent = data.likes;
-  bigPictureCountComments.textContent = data.comments.length;
-  bigPictureDescrip.textContent = data.description;
-  addComment(data);
+  bigPictureImg.src = url;
+  bigPictureLikes.textContent = likes;
+  bigPictureCountComments.textContent = comments.length;
+  bigPictureDescrip.textContent = description;
+};
+
+const renderBigPicture = (data) => {
+  openBigPicture();
+  bigPictureDetailes(data);
+  addComment(data.comments);
 };
 
 export {renderBigPicture};

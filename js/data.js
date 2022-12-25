@@ -41,7 +41,7 @@ function createPost(i) {
     description: getInfo(descriptions),
     likes: getRandomNumber(15, 200),
     comments: Array.from(
-      { length: getRandomNumber(0, 6) },
+      { length: getRandomNumber(0, 15) },
       (_, commentIndex) => createComment(commentIndex + 1)
     ),
   };
