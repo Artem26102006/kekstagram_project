@@ -18,9 +18,7 @@ if (acceptPhtots) {
 }
 
 const MAX_HASHTAG_COUNT = 5;
-const MIN_HASHTAG_LENGTH = 2;
-const MAX_HASHTAG_LENGTH = 20;
-const UNVALID_SYMBOLS = /[^a-zA-Z0-9а-яА-ЯёЁ]/g;
+const UNVALID_SYMBOLS = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
 
 const pristine = new Pristine(photoUploadForm, {
   classTo: 'img-upload__element',
@@ -28,11 +26,8 @@ const pristine = new Pristine(photoUploadForm, {
   errorTextClass: 'img-upload__error',
 });
 
-const startsWithHash = (string) => string[0] === '#';
-const hasSymbols = (string) => !UNVALID_SYMBOLS.test(string.slice(1));
-const lengthHashtag = (string) => string.length >= MIN_HASHTAG_LENGTH && string.length <= MAX_HASHTAG_LENGTH;
+const isValidTag = (tag) => UNVALID_SYMBOLS.test(tag);
 
-const isValidTag = (tag) => startsWithHash(tag) && hasSymbols(tag) && lengthHashtag(tag);
 const hasValidCount = (tags) => tags.length <= MAX_HASHTAG_COUNT;
 const hasUniceTags = (tags) => {
   const lowerCaseTags = tags.map((tag) => tag.toLowerCase());
