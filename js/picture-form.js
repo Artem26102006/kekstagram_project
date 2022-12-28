@@ -1,5 +1,6 @@
-/* eslint-disable no-console */
 import {isEscapeKey} from './util.js';
+// import {scalePicture} from './scale-picture.js';
+
 const body = document.querySelector('body');
 const photoUploadForm = document.querySelector('.img-upload__form');
 const photoFile = photoUploadForm.querySelector('#upload-file');
@@ -45,10 +46,6 @@ pristine.addValidator(
   'Неправильно заполнены хэштеги'
 );
 
-textarea.addEventListener('input', () => {
-  counter.textContent = textarea.value.length;
-});
-
 const isTextFieldFocused = () => hashtags === document.activeElement || textarea === document.activeElement;
 
 const onEscKeydown = (evt) => {
@@ -63,6 +60,9 @@ const onEscKeydown = (evt) => {
 function openPhoto() {
   photoOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
+  textarea.addEventListener('input', () => {
+    counter.textContent = textarea.value.length;
+  });
   document.addEventListener('keydown', onEscKeydown);
 }
 
@@ -84,6 +84,26 @@ photoFile.addEventListener('change', (evt) => {
 
   reader.addEventListener('load', (ev) => {
     photoPreview.innerHTML = `<img src="${ev.target.result}">`;
+    const decreaseButton = document.querySelector('.scale__control--smaller');
+    const increaseButton = document.querySelector('.scale__control--bigger');
+    const scaleValue = document.querySelector('.scale__control--value');
+    const MAX_VALUE_COUNT = 100;
+
+    const scalePicture = () => {
+      const pictureScale = photoPreview.querySelector('img');
+      scaleValue.value = `${MAX_VALUE_COUNT}%`;
+      let valueScale = MAX_VALUE_COUNT;
+      // if ()
+      decreaseButton.addEventListener('click', () => {
+        pictureScale.style.transform = `scale(${scaleValue.value = valueScale -= 25}%)`;
+        scaleValue.value = `${valueScale}%`;
+      });
+      increaseButton.addEventListener('click', () => {
+        pictureScale.style.transform = `scale(${scaleValue.value = valueScale += 25}%)`;
+        scaleValue.value = `${valueScale}%`;
+      });
+    };
+    scalePicture();
     photoEffectsPreview.forEach((item) => {
       item.style.backgroundImage = `url("${ev.target.result}")`;
     });
