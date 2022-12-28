@@ -1,5 +1,6 @@
+/* eslint-disable no-console */
 import {isEscapeKey} from './util.js';
-// import {scalePicture} from './scale-picture.js';
+import {validateForm} from './validate-form.js';
 
 const body = document.querySelector('body');
 const photoUploadForm = document.querySelector('.img-upload__form');
@@ -8,7 +9,6 @@ const photoOverlay = photoUploadForm.querySelector('.img-upload__overlay');
 const photoPreview = photoUploadForm.querySelector('.img-upload__preview');
 const photoEffectsPreview = photoUploadForm.querySelectorAll('.effects__preview');
 const closeButton = document.querySelector('#upload-cancel');
-// const buttonSubmit = document.querySelector('#upload-submit');
 const textarea = document.querySelector('.text__description');
 const counter = document.querySelector('.counter-block__dinamic-number');
 const hashtags = document.querySelector('.text__hashtags');
@@ -17,34 +17,6 @@ const acceptPhtots = ['.jpg', '.jpeg', '.png', '.gif'];
 if (acceptPhtots) {
   photoFile.setAttribute('accept', acceptPhtots.join(','));
 }
-
-const MAX_HASHTAG_COUNT = 5;
-const UNVALID_SYMBOLS = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
-
-const pristine = new Pristine(photoUploadForm, {
-  classTo: 'img-upload__element',
-  errorTextParent: 'img-upload__element',
-  errorTextClass: 'img-upload__error',
-});
-
-const isValidTag = (tag) => UNVALID_SYMBOLS.test(tag);
-
-const hasValidCount = (tags) => tags.length <= MAX_HASHTAG_COUNT;
-const hasUniceTags = (tags) => {
-  const lowerCaseTags = tags.map((tag) => tag.toLowerCase());
-  return lowerCaseTags.length === new Set(lowerCaseTags).size;
-};
-
-const validateTags = (value) => {
-  const tags = value.trim().split(' ').filter((tag) => tag.trim().length);
-  return hasValidCount(tags) && hasUniceTags(tags) && tags.every(isValidTag);
-};
-
-pristine.addValidator(
-  hashtags,
-  validateTags,
-  'Неправильно заполнены хэштеги'
-);
 
 const isTextFieldFocused = () => hashtags === document.activeElement || textarea === document.activeElement;
 
@@ -60,6 +32,7 @@ const onEscKeydown = (evt) => {
 function openPhoto() {
   photoOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
+  validateForm();
   textarea.addEventListener('input', () => {
     counter.textContent = textarea.value.length;
   });
@@ -87,25 +60,64 @@ photoFile.addEventListener('change', (evt) => {
     const decreaseButton = document.querySelector('.scale__control--smaller');
     const increaseButton = document.querySelector('.scale__control--bigger');
     const scaleValue = document.querySelector('.scale__control--value');
+    const pictureScale = photoPreview.querySelector('img');
     const MAX_VALUE_COUNT = 100;
 
-    const scalePicture = () => {
-      const pictureScale = photoPreview.querySelector('img');
-      scaleValue.value = `${MAX_VALUE_COUNT}%`;
-      let valueScale = MAX_VALUE_COUNT;
-      // if ()
-      decreaseButton.addEventListener('click', () => {
+    scaleValue.value = `${MAX_VALUE_COUNT}%`;
+    let valueScale = MAX_VALUE_COUNT;
+
+    decreaseButton.addEventListener('click', () => {
+      if (scaleValue.value === '25%') {
+        pictureScale.style.transform = `scale(${scaleValue.value = 25}%)`;
+        scaleValue.value = '25%';
+      } else {
         pictureScale.style.transform = `scale(${scaleValue.value = valueScale -= 25}%)`;
         scaleValue.value = `${valueScale}%`;
-      });
-      increaseButton.addEventListener('click', () => {
+      }
+    });
+
+    increaseButton.addEventListener('click', () => {
+      if (scaleValue.value === '100%') {
+        pictureScale.style.transform = `scale(${scaleValue.value = 100}%)`;
+        scaleValue.value = '100%';
+      } else {
         pictureScale.style.transform = `scale(${scaleValue.value = valueScale += 25}%)`;
         scaleValue.value = `${valueScale}%`;
+      }
+    });
+
+    const sliderElement = document.querySelector('.effect-level__slider');
+    const valueElement = document.querySelector('.effect-level__value');
+    valueElement.style.display = 'block';
+    valueElement.style.color = 'black';
+    valueElement.value = 100;
+
+    noUiSlider.create(sliderElement, {
+      range: {
+        min: 0,
+        max: 100,
+      },
+      start: 100,
+      step: 1,
+      connect: 'lower',
+    });
+
+    sliderElement.noUiSlider.on('update', () => {
+      valueElement.value = sliderElement.noUiSlider.get();
+    });
+
+    const changeBackPicture = (picture) => {
+      picture.addEventListener('click', () => {
+        pictureScale.classList.remove(pictureScale.classList[0]);
+        pictureScale.classList.add(picture.classList[1]);
+
+        // console.log(typeof(picture.classList[1]));
       });
     };
-    scalePicture();
+
     photoEffectsPreview.forEach((item) => {
       item.style.backgroundImage = `url("${ev.target.result}")`;
+      changeBackPicture(item);
     });
   });
 
