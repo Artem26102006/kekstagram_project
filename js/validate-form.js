@@ -9,25 +9,48 @@ const pristine = new Pristine(photoUploadForm, {
   errorTextClass: 'img-upload__error',
 });
 
-const isValidTag = (tag) => UNVALID_SYMBOLS.test(tag);
+const hashtagsCheck = () => {
+  const isValidTag = (tag) => {
+    if (UNVALID_SYMBOLS.test(tag)) {
+      hashtags.style.outline = '';
+      return true;
+    } else {
+      pristine.addError(hashtags, 'Некорректно введен хэш-тег');
+      hashtags.style.outline = '2px solid red';
+    }
+  };
 
-const hasValidCount = (tags) => tags.length <= MAX_HASHTAG_COUNT;
-const hasUniceTags = (tags) => {
-  const lowerCaseTags = tags.map((tag) => tag.toLowerCase());
-  return lowerCaseTags.length === new Set(lowerCaseTags).size;
+  const hasValidCount = (tags) => {
+    if (tags.length <= MAX_HASHTAG_COUNT) {
+      hashtags.style.outline = '';
+      return true;
+    } else {
+      pristine.addError(hashtags, `Нельзя указывать больше ${MAX_HASHTAG_COUNT} хэш-тегов. Просьба удалить лишние`);
+      hashtags.style.outline = '2px solid red';
+    }
+  };
+
+  const hasUniceTags = (tags) => {
+    const lowerCaseTags = tags.map((tag) => tag.toLowerCase());
+    if (lowerCaseTags.length === new Set(lowerCaseTags).size) {
+      hashtags.style.outline = '';
+      return true;
+    } else {
+      pristine.addError(hashtags, 'Пожалуйста, удалите повторяющиеся хэш-теги');
+      hashtags.style.outline = '2px solid red';
+    }
+  };
+
+  const validateTags = (value) => {
+    const tags = value.trim().split(' ').filter((tag) => tag.trim().length);
+    if (hasValidCount(tags) && hasUniceTags(tags) && tags.every(isValidTag)) {
+      hashtags.style.outline = '';
+      return true;
+    } else {
+      return false;
+    }
+  };
+  validateTags(hashtags.value);
 };
 
-const validateTags = (value) => {
-  const tags = value.trim().split(' ').filter((tag) => tag.trim().length);
-  return hasValidCount(tags) && hasUniceTags(tags) && tags.every(isValidTag);
-};
-
-const validateForm = () => {
-  pristine.addValidator(
-    hashtags,
-    validateTags,
-    'Неправильно заполнены хэштеги'
-  );
-};
-
-export {validateForm};
+export {hashtagsCheck, pristine};

@@ -11,7 +11,7 @@ const STEP = 25;
 const onScaleImgDecrease = () => {
   let sizeScale = parseFloat(scaleControlValue.value, 10);
   if (sizeScale === MIN) {
-    return;
+    return false;
   }
   sizeScale -= STEP;
   scaleControlValue.value = `${sizeScale}%`;
@@ -21,7 +21,7 @@ const onScaleImgDecrease = () => {
 const onScaleImgIncrease = () => {
   let sizeScale = parseFloat(scaleControlValue.value, 10);
   if (sizeScale === MAX) {
-    return;
+    return false;
   }
   sizeScale += STEP;
   scaleControlValue.value = `${sizeScale}%`;

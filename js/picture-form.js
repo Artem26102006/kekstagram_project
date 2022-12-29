@@ -1,5 +1,5 @@
 import {isEscapeKey} from './util.js';
-import {validateForm} from './validate-form.js';
+import {hashtagsCheck, pristine} from './validate-form.js';
 import {photoFile} from './file-upload.js';
 import { onScaleImgDecrease, onScaleImgIncrease, increaseButton, decreaseButton, picture } from './scale-control.js';
 
@@ -8,7 +8,7 @@ const photoUploadForm = document.querySelector('.img-upload__form');
 const photoOverlay = document.querySelector('.img-upload__overlay');
 const closeButton = document.querySelector('#upload-cancel');
 const textarea = document.querySelector('.text__description');
-const hashtags = document.querySelector('.text__hashtags');
+const hashtagsText = document.querySelector('.text__hashtags');
 const sliderElementBlock = document.querySelector('.effect-level');
 
 photoUploadForm.addEventListener('change', () => {
@@ -20,7 +20,7 @@ const scaleChange = () => {
   increaseButton.addEventListener('click', onScaleImgIncrease);
 };
 
-const isTextFieldFocused = () => hashtags === document.activeElement || textarea === document.activeElement;
+const isTextFieldFocused = () => hashtagsText === document.activeElement || textarea === document.activeElement;
 
 const onEscKeydown = (evt) => {
   if (!isTextFieldFocused() && isEscapeKey(evt)) {
@@ -34,7 +34,7 @@ const onEscKeydown = (evt) => {
 function openPhoto() {
   photoOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
-  validateForm();
+  hashtagsText.addEventListener('input', hashtagsCheck);
   scaleChange();
   document.addEventListener('keydown', onEscKeydown);
 }
@@ -43,6 +43,11 @@ function closePhoto() {
   photoOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
   photoUploadForm.reset();
+  textarea.value = '';
+  hashtagsText.value = '';
+  hashtagsText.style.outline = '';
+  hashtagsText.removeEventListener('input', hashtagsCheck);
+  pristine.reset();
   decreaseButton.addEventListener('click', onScaleImgDecrease);
   increaseButton.addEventListener('click', onScaleImgIncrease);
   picture.style.transform = '';
