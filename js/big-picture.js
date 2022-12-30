@@ -13,17 +13,13 @@ let commentsList = [];
 
 const createComment = ({ avatar, name, message }) => {
   const comment = document.createElement('li');
-  comment.innerHTML =
-    '<img class="social__picture" src="" alt="" width="35" height="35"><p class="social__text"></p>';
+  comment.innerHTML = `
+    <img class="social__picture" src="${avatar}" alt="${name}" width="35" height="35">
+    <p class="social__text">${message}</p>
+  `;
   comment.classList.add('social__comment');
-
-  comment.querySelector('.social__picture').src = avatar;
-  comment.querySelector('.social__picture').alt = name;
-  comment.querySelector('.social__text').textContent = message;
-
   return comment;
 };
-
 
 const renderComments = () => {
   commentsShown += COMMENTS_PER_PORTION;
@@ -44,9 +40,10 @@ const renderComments = () => {
   countComments.innerHTML = `${commentsShown} из <span class="comments-count">${commentsList.length}</span> комментариев`;
 };
 
-
-const bigPictureDetailes = ({url, likes, comments, description}) => {
-  const bigPictureImg = bigPicture.querySelector('.big-picture__img').querySelector('img');
+const bigPictureDetailes = ({ url, likes, comments, description }) => {
+  const bigPictureImg = bigPicture
+    .querySelector('.big-picture__img')
+    .querySelector('img');
   const bigPictureLikes = bigPicture.querySelector('.likes-count');
   const bigPictureCountComments = bigPicture.querySelector('.comments-count');
   const bigPictureDescrip = bigPicture.querySelector('.social__caption');
@@ -62,6 +59,10 @@ const renderBigPicture = (data) => {
   commentsList = data.comments;
   if (commentsList.length > 0) {
     renderComments();
+  } else {
+    countComments.innerHTML = `${commentsShown} из <span class="comments-count">${commentsList.length}</span> комментариев`;
+    buttonCommentsLoader.classList.add('hidden');
+    commentsPicture.innerHTML = '';
   }
 };
 
@@ -93,4 +94,4 @@ closeButton.addEventListener('click', () => {
   closeBigPicture();
 });
 
-export {renderBigPicture};
+export { renderBigPicture };
