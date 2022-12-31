@@ -1,5 +1,6 @@
+/* eslint-disable no-console */
 import {isEscapeKey} from './util.js';
-import {hashtagsCheck, pristine} from './validate-form.js';
+import {checkHashtags, pristine} from './validate-form.js';
 import {photoFile} from './file-upload.js';
 import { onScaleImgDecrease, onScaleImgIncrease, increaseButton, decreaseButton, picture } from './scale-control.js';
 
@@ -34,7 +35,7 @@ const onEscKeydown = (evt) => {
 function openPhoto() {
   photoOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
-  hashtagsText.addEventListener('input', hashtagsCheck);
+  hashtagsText.addEventListener('input', checkHashtags);
   scaleChange();
   document.addEventListener('keydown', onEscKeydown);
 }
@@ -46,7 +47,7 @@ function closePhoto() {
   textarea.value = '';
   hashtagsText.value = '';
   hashtagsText.style.outline = '';
-  hashtagsText.removeEventListener('input', hashtagsCheck);
+  hashtagsText.removeEventListener('input', checkHashtags);
   pristine.reset();
   decreaseButton.addEventListener('click', onScaleImgDecrease);
   increaseButton.addEventListener('click', onScaleImgIncrease);
