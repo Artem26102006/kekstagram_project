@@ -67,7 +67,5 @@ photoUploadForm.addEventListener('submit', (evt) => {
     console.log('yes');
   } else {
     console.log('error');
-    hashtagsText.value = '';
-    pristine.reset();
   }
 });
