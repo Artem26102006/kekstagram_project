@@ -1,8 +1,6 @@
 /* eslint-disable no-console */
-// import { getPosts } from './data.js';
 import { renderPictures } from './pictures.js';
 import './picture-form.js';
-// renderPictures(getPosts());
 
 fetch('https://25.javascript.pages.academy/kekstagram/data')
   .then((response) => {

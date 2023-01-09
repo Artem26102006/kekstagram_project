@@ -1,8 +1,14 @@
-/* eslint-disable no-console */
-import {isEscapeKey} from './util.js';
-import {pristine} from './validate-form.js';
-import {photoFile} from './file-upload.js';
-import { onScaleImgDecrease, onScaleImgIncrease, increaseButton, decreaseButton, picture } from './scale-control.js';
+import { isEscapeKey } from './util.js';
+import { pristine } from './validate-form.js';
+import { photoFile } from './file-upload.js';
+import {
+  onScaleImgDecrease,
+  onScaleImgIncrease,
+  increaseButton,
+  decreaseButton,
+  picture,
+} from './scale-control.js';
+import { sendPictureForm } from './send-picture.js';
 
 const body = document.querySelector('body');
 const photoUploadForm = document.querySelector('.img-upload__form');
@@ -21,7 +27,9 @@ const scaleChange = () => {
   increaseButton.addEventListener('click', onScaleImgIncrease);
 };
 
-const isTextFieldFocused = () => hashtagsText === document.activeElement || textarea === document.activeElement;
+const isTextFieldFocused = () =>
+  hashtagsText === document.activeElement ||
+  textarea === document.activeElement;
 
 const onEscKeydown = (evt) => {
   if (!isTextFieldFocused() && isEscapeKey(evt)) {
@@ -55,17 +63,10 @@ function closePhoto() {
   document.removeEventListener('keydown', onEscKeydown);
 }
 
+sendPictureForm(closePhoto);
+
 closeButton.addEventListener('click', () => {
   closePhoto();
 });
 
-photoUploadForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-
-  const isValid = pristine.validate();
-  if (isValid) {
-    console.log('yes');
-  } else {
-    console.log('error');
-  }
-});
+export {closePhoto};
