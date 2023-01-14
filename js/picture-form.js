@@ -8,7 +8,7 @@ import {
   decreaseButton,
   picture,
 } from './scale-control.js';
-import { sendPictureForm } from './send-picture.js';
+import { sendPictureForm } from './fetch-pictures.js';
 
 const body = document.querySelector('body');
 const photoUploadForm = document.querySelector('.img-upload__form');
@@ -53,11 +53,10 @@ function closePhoto() {
   photoUploadForm.reset();
   textarea.value = '';
   hashtagsText.value = '';
-  hashtagsText.style.outline = '';
+  picture.style.transform = '';
   pristine.reset();
   decreaseButton.addEventListener('click', onScaleImgDecrease);
   increaseButton.addEventListener('click', onScaleImgIncrease);
-  picture.style.transform = '';
   photoFile.value = '';
   sliderElementBlock.classList.remove('hidden');
   document.removeEventListener('keydown', onEscKeydown);

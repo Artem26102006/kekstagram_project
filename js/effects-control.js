@@ -105,4 +105,4 @@ const changeBackPicture = (picture) => {
   });
 };
 
-export { changeBackPicture };
+export {changeBackPicture, photo};
