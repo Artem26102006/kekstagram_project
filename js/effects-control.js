@@ -19,6 +19,7 @@ const changeBackPicture = (picture) => {
   photo.style.filter = '';
   valueElement.value = '';
   photo.classList.remove(photo.classList[0]);
+
   picture.addEventListener('click', () => {
     photo.classList.remove(photo.classList[0]);
     photo.classList.add(picture.classList[1]);
