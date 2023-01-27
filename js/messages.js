@@ -1,3 +1,5 @@
+import { isEscapeKey } from './util.js';
+
 const body = document.querySelector('body');
 const photoOverlay = document.querySelector('.img-upload__overlay');
 
@@ -7,8 +9,16 @@ function hideMessage() {
   messageElement.remove();
   body.classList.remove('modal-open');
   photoOverlay.classList.add('hidden');
+  document.removeEventListener('keydown', escHide);
 }
 
+function escHide(evt) {
+  if (isEscapeKey(evt)) {
+    hideMessage();
+  } else {
+    return false;
+  }
+}
 
 function onSuccess() {
   const template = document.querySelector('#success').content;
@@ -16,6 +26,8 @@ function onSuccess() {
   const blockSuccessMessage = successMessage.querySelector('.success__inner');
   const buttonSuccessMessage = successMessage.querySelector('.success__button');
   body.append(successMessage);
+
+  document.addEventListener('keydown', escHide);
 
   buttonSuccessMessage.addEventListener('click', () => {
     hideMessage();
@@ -35,6 +47,8 @@ function onFail() {
   const blockErrorMessage = errorMessage.querySelector('.error__inner');
   const buttonErrorMessage = errorMessage.querySelector('.error__button');
   body.append(errorMessage);
+
+  document.addEventListener('keydown', escHide);
 
   buttonErrorMessage.addEventListener('click', () => {
     hideMessage();

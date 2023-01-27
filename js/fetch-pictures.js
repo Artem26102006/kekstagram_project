@@ -1,9 +1,11 @@
 import { renderPictures } from './pictures.js';
 import { pristine } from './validate-form.js';
 import { onSuccess, onFail, showAlert } from './messages.js';
+import { filterClick } from './filters-images.js';
 
 const photoForm = document.querySelector('.img-upload__form');
 const buttonUpload = document.querySelector('#upload-submit');
+const filters = document.querySelector('.img-filters');
 
 function getPictures() {
   fetch('https://25.javascript.pages.academy/kekstagram/data')
@@ -15,9 +17,14 @@ function getPictures() {
       throw new Error(`${response.status} — ${response.statusText}`);
     })
     .then((response) => response.json())
-    .then((posts) => renderPictures(posts))
+    .then((posts) => {
+      renderPictures(posts);
+      filters.classList.remove('img-filters--inactive');
+    })
     .catch((err) => showAlert(`Ошибка ${err.message.slice(0,4)}`));
 }
+
+filterClick();
 
 const sendPictureForm = (closePhoto) => {
   photoForm.addEventListener('submit', (evt) => {
