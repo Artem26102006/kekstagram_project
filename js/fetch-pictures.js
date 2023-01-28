@@ -2,6 +2,7 @@ import { renderPictures } from './pictures.js';
 import { pristine } from './validate-form.js';
 import { onSuccess, onFail, showAlert } from './messages.js';
 import { filterClick } from './filters-images.js';
+import { sortFilter, defaultFilter, randomFilter } from './filters-images.js';
 
 const photoForm = document.querySelector('.img-upload__form');
 const buttonUpload = document.querySelector('#upload-submit');
@@ -19,6 +20,9 @@ function getPictures() {
     .then((response) => response.json())
     .then((posts) => {
       renderPictures(posts);
+      defaultFilter(posts);
+      randomFilter(posts);
+      sortFilter(posts);
       filters.classList.remove('img-filters--inactive');
     })
     .catch((err) => showAlert(`Ошибка ${err.message.slice(0,4)}`));
@@ -26,7 +30,7 @@ function getPictures() {
 
 filterClick();
 
-const sendPictureForm = (closePhoto) => {
+function sendPictureForm(closePhoto) {
   photoForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
@@ -51,6 +55,6 @@ const sendPictureForm = (closePhoto) => {
       });
     }
   });
-};
+}
 
 export { getPictures, sendPictureForm };

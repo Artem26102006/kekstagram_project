@@ -16,9 +16,9 @@ const renderPictures = function(list) {
     postTemplateClone.addEventListener('click', () => {
       renderBigPicture(post);
     });
-    picturesFragment.appendChild(postTemplateClone);
+    picturesFragment.append(postTemplateClone);
   });
-  picturesContainer.appendChild(picturesFragment);
+  picturesContainer.append(picturesFragment);
 };
 
-export {renderPictures};
+export { renderPictures };
