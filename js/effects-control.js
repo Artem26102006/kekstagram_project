@@ -16,8 +16,6 @@ noUiSlider.create(sliderElement, {
 
 const changeBackPicture = (picture) => {
   sliderElementBlock.classList.add('hidden');
-  photo.style.filter = '';
-  valueElement.value = '';
   photo.classList.remove(photo.classList[0]);
 
   picture.addEventListener('click', () => {
@@ -106,4 +104,4 @@ const changeBackPicture = (picture) => {
   });
 };
 
-export {changeBackPicture, photo};
+export {changeBackPicture};

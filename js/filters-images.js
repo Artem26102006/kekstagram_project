@@ -1,4 +1,5 @@
 import { renderPictures } from './pictures.js';
+
 const filterButtons = document.querySelectorAll('.img-filters__button');
 const filterDefault = document.querySelector('#filter-default');
 const filterRandom = document.querySelector('#filter-random');

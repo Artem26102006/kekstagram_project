@@ -28,4 +28,4 @@ const onScaleImgIncrease = () => {
   picture.style.transform = `scale(${sizeScale / DIVISOR})`;
 };
 
-export {onScaleImgDecrease, onScaleImgIncrease, decreaseButton, increaseButton, picture};
+export {onScaleImgDecrease, onScaleImgIncrease, decreaseButton, increaseButton};
