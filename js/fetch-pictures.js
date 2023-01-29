@@ -20,15 +20,15 @@ function getPictures() {
     .then((response) => response.json())
     .then((posts) => {
       renderPictures(posts);
+      filters.classList.remove('img-filters--inactive');
+      filterClick();
       defaultFilter(posts);
       randomFilter(posts);
       sortFilter(posts);
-      filters.classList.remove('img-filters--inactive');
     })
     .catch((err) => showAlert(`Ошибка ${err.message.slice(0,4)}`));
 }
 
-filterClick();
 
 function sendPictureForm(closePhoto) {
   photoForm.addEventListener('submit', (evt) => {
