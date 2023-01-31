@@ -53,6 +53,9 @@ function sendPictureForm(closePhoto) {
         closePhoto();
         onFail();
       });
+    } else {
+      buttonUpload.disabled = false;
+      buttonUpload.textContent = 'Опубликовать';
     }
   });
 }
