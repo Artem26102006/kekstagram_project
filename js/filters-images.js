@@ -39,7 +39,7 @@ function randomFilter(img) {
   });
 }
 
-function sortFilter(img) {
+function discussedFilter(img) {
   filterDiscussed.addEventListener('click', () => {
     const pictures = document.querySelectorAll('.picture');
     const listOfPictures = [...img];
@@ -49,4 +49,4 @@ function sortFilter(img) {
   });
 }
 
-export {filterClick, sortFilter, defaultFilter, randomFilter};
+export {filterClick, discussedFilter, defaultFilter, randomFilter};

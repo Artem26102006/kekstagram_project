@@ -20,9 +20,4 @@ function isEscapeKey(evt) {
   return evt.key === 'Escape';
 }
 
-export {
-  getRandomNumber,
-  getInfo,
-  checkLengthString,
-  isEscapeKey
-};
+export { getRandomNumber, getInfo, checkLengthString, isEscapeKey };
