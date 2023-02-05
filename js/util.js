@@ -20,4 +20,15 @@ function isEscapeKey(evt) {
   return evt.key === 'Escape';
 }
 
-export { getRandomNumber, getInfo, checkLengthString, isEscapeKey };
+function debounce(callee, timeoutMs) {
+  return function perform(...args) {
+    const previousCall = this.lastCall;
+    this.lastCall = Date.now();
+    if (previousCall && this.lastCall - previousCall <= timeoutMs) {
+      clearTimeout(this.lastCallTimer);
+    }
+    this.lastCallTimer = setTimeout(() => callee(...args), timeoutMs);
+  };
+}
+
+export { getRandomNumber, getInfo, checkLengthString, isEscapeKey, debounce };

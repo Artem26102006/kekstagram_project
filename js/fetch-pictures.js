@@ -1,8 +1,7 @@
 import { renderPictures } from './pictures.js';
 import { pristine } from './validate-form.js';
 import { onSuccess, onFail, showAlert } from './messages.js';
-import { filterClick } from './filters-images.js';
-import { discussedFilter, defaultFilter, randomFilter } from './filters-images.js';
+import { filterClick, filtersImg } from './filters-images.js';
 
 const photoForm = document.querySelector('.img-upload__form');
 const buttonUpload = document.querySelector('#upload-submit');
@@ -32,9 +31,7 @@ function getPictures() {
       filters.classList.remove('img-filters--inactive');
       renderPictures(posts);
       filterClick();
-      defaultFilter(posts);
-      randomFilter(posts);
-      discussedFilter(posts);
+      filtersImg(posts);
     })
     .catch((err) => showAlert(`Ошибка ${err.message.slice(0,4)}`));
 }
