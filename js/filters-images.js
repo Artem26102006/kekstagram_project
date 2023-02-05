@@ -1,11 +1,13 @@
 import { renderPictures } from './pictures.js';
-// import { debounce } from './util.js';
+import { debounce } from './util.js';
 
 const filterButtons = document.querySelectorAll('.img-filters__button');
-const filterDefault = document.querySelector('#filter-default');
-const filterRandom = document.querySelector('#filter-random');
-const filterDiscussed = document.querySelector('#filter-discussed');
-
+const filtersContainer = document.querySelector('.img-filters__form');
+const filters = {
+  default: 'filter-default',
+  random: 'filter-random',
+  discussed: 'filter-discussed',
+};
 const randomSort = () => Math.random() - 0.5;
 
 function filterClick() {
@@ -24,57 +26,31 @@ function filterClick() {
 }
 
 function filtersImg(img) {
-  filterDefault.addEventListener('click', () => {
-    const pictures = document.querySelectorAll('.picture');
-    const listOfPictures = [...img];
-    pictures.forEach((item) => item.remove());
-    renderPictures(listOfPictures);
-  });
+  function changeFilter(evt) {
+    const currentFilter = evt.target;
+    if (currentFilter.id === filters.default) {
+      const pictures = document.querySelectorAll('.picture');
+      const listOfPictures = [...img];
+      pictures.forEach((item) => item.remove());
+      renderPictures(listOfPictures);
+    } else if (currentFilter.id === filters.random) {
+      const pictures = document.querySelectorAll('.picture');
+      const listOfPictures = [...img];
+      listOfPictures.sort(randomSort);
+      pictures.forEach((item) => item.remove());
+      renderPictures(listOfPictures.slice(0, 10));
+    } else if (currentFilter.id === filters.discussed) {
+      const pictures = document.querySelectorAll('.picture');
+      const listOfPictures = [...img];
+      listOfPictures.sort((a, b) => b.comments.length - a.comments.length);
+      pictures.forEach((item) => item.remove());
+      renderPictures(listOfPictures);
+    }
+  }
 
-  filterRandom.addEventListener('click', () => {
-    const pictures = document.querySelectorAll('.picture');
-    const listOfPictures = [...img];
-    listOfPictures.sort(randomSort);
-    pictures.forEach((item) => item.remove());
-    renderPictures(listOfPictures.slice(0, 10));
-  });
-
-  filterDiscussed.addEventListener('click', () => {
-    const pictures = document.querySelectorAll('.picture');
-    const listOfPictures = [...img];
-    listOfPictures.sort((a, b) => b.comments.length - a.comments.length);
-    pictures.forEach((item) => item.remove());
-    renderPictures(listOfPictures);
-  });
+  const debouncedChange = debounce(changeFilter, 500);
+  filtersContainer.addEventListener('click', debouncedChange);
 }
 
-// function defaultFilter(img) {
-//   filterDefault.addEventListener('click', () => {
-//     const pictures = document.querySelectorAll('.picture');
-//     const listOfPictures = [...img];
-//     pictures.forEach((item) => item.remove());
-//     renderPictures(listOfPictures);
-//   });
-// }
-
-// function randomFilter(img) {
-//   filterRandom.addEventListener('click', () => {
-//     const pictures = document.querySelectorAll('.picture');
-//     const listOfPictures = [...img];
-//     listOfPictures.sort(randomSort);
-//     pictures.forEach((item) => item.remove());
-//     renderPictures(listOfPictures.slice(0, 10));
-//   });
-// }
-
-// function discussedFilter(img) {
-//   filterDiscussed.addEventListener('click', () => {
-//     const pictures = document.querySelectorAll('.picture');
-//     const listOfPictures = [...img];
-//     listOfPictures.sort((a, b) => b.comments.length - a.comments.length);
-//     pictures.forEach((item) => item.remove());
-//     renderPictures(listOfPictures);
-//   });
-// }
 
 export { filterClick, filtersImg };
