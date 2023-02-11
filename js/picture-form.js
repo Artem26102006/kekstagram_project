@@ -7,7 +7,7 @@ import {
   increaseButton,
   decreaseButton
 } from './scale-control.js';
-import { sendPictureForm } from './fetch-pictures.js';
+import { sendPictureForm } from './api.js';
 
 const body = document.querySelector('body');
 const photoUploadForm = document.querySelector('.img-upload__form');
